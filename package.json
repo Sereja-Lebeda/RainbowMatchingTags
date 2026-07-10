@@ -1,6 +1,6 @@
 {
-  "name": "rainbow-tags-rewired",
-  "displayName": "Rainbow Tags Rewired",
+  "name": "rainbow-matching-tags",
+  "displayName": "Rainbow Matching Tags",
   "description": "Colors matching tag pairs by nesting depth, stays correct when a tag is missing or commented out, and highlights the matching pair on click.",
   "version": "0.1.0",
   "publisher": "local-dev",
@@ -9,6 +9,7 @@
   "keywords": [
     "rainbow",
     "tags",
+    "matching",
     "html",
     "xml",
     "jsx",
@@ -26,9 +27,9 @@
   "main": "./out/src/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Rainbow Tags",
+      "title": "Rainbow Matching Tags",
       "properties": {
-        "rainbowTags.colors": {
+        "rainbowMatchingTags.colors": {
           "type": "array",
           "items": {
             "type": "string"
@@ -45,7 +46,7 @@
           ],
           "description": "Colors used to paint tag pairs, cycling by nesting depth."
         },
-        "rainbowTags.highlightType": {
+        "rainbowMatchingTags.highlightType": {
           "type": "string",
           "enum": [
             "color",
@@ -55,22 +56,22 @@
           "default": "color",
           "description": "How the rainbow colors are applied to tags."
         },
-        "rainbowTags.matchBackgroundColor": {
+        "rainbowMatchingTags.matchBackgroundColor": {
           "type": "string",
           "default": "rgba(255, 215, 0, 0.35)",
           "description": "Background color applied to a tag and its matching pair when the cursor is placed on either of them."
         },
-        "rainbowTags.unmatchedColor": {
+        "rainbowMatchingTags.unmatchedColor": {
           "type": "string",
           "default": "#e2041b",
           "description": "Color used for tags that could not be matched to a pair (e.g. a missing or commented-out closing tag)."
         },
-        "rainbowTags.allowEverywhere": {
+        "rainbowMatchingTags.allowEverywhere": {
           "type": "boolean",
           "default": false,
           "description": "Enable tag highlighting in all file types, not just supportedLanguages."
         },
-        "rainbowTags.supportedLanguages": {
+        "rainbowMatchingTags.supportedLanguages": {
           "type": "array",
           "items": {
             "type": "string"
@@ -86,7 +87,7 @@
           ],
           "description": "Language IDs the extension activates for."
         },
-        "rainbowTags.denylistTags": {
+        "rainbowMatchingTags.denylistTags": {
           "type": "array",
           "items": {
             "type": "string"

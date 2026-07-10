@@ -24,8 +24,10 @@ let matchDecorationType: vscode.TextEditorDecorationType | undefined;
 // the cursor around doesn't reparse the whole document on every event.
 let parseCache = new WeakMap<vscode.TextDocument, CachedParse>();
 
+const CONFIG_SECTION = 'rainbowMatchingTags';
+
 function getConfig(): RainbowTagsConfig {
-  const cfg = vscode.workspace.getConfiguration('rainbowTags');
+  const cfg = vscode.workspace.getConfiguration(CONFIG_SECTION);
   return {
     colors: cfg.get<string[]>('colors', []),
     highlightType: cfg.get<RainbowTagsConfig['highlightType']>('highlightType', 'color'),
@@ -197,7 +199,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
 
     vscode.workspace.onDidChangeConfiguration(event => {
-      if (!event.affectsConfiguration('rainbowTags')) {
+      if (!event.affectsConfiguration(CONFIG_SECTION)) {
         return;
       }
       config = getConfig();

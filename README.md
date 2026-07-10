@@ -1,4 +1,4 @@
-# Rainbow Tags Rewired
+# Rainbow Matching Tags
 
 Colors matching HTML/JSX/XML tag pairs by nesting depth, so you can see at a
 glance which `<div>` closes which. Click on any tag and its pair lights up
@@ -78,13 +78,13 @@ and 7 levels of same-named nested `<div>`s.
 
 | Setting | Default | Description |
 |---|---|---|
-| `rainbowTags.colors` | 8-color palette | Colors used to paint tag pairs, cycling by nesting depth. |
-| `rainbowTags.highlightType` | `"color"` | `"color"`, `"background-color"`, or `"border"` — how the rainbow colors are applied. |
-| `rainbowTags.matchBackgroundColor` | `rgba(255, 215, 0, 0.35)` | Background color applied to a tag and its match when the cursor is on either one. |
-| `rainbowTags.unmatchedColor` | `#e2041b` | Color for tags that couldn't be matched to a pair. |
-| `rainbowTags.allowEverywhere` | `false` | Run on every file type, not just `supportedLanguages`. |
-| `rainbowTags.supportedLanguages` | `html`, `php`, `twig`, `blade`, `smarty`, `xml`, `vue` | Language IDs the extension activates for. |
-| `rainbowTags.denylistTags` | void/meta/structural tags | Tag names that are never colored. |
+| `rainbowMatchingTags.colors` | 8-color palette | Colors used to paint tag pairs, cycling by nesting depth. |
+| `rainbowMatchingTags.highlightType` | `"color"` | `"color"`, `"background-color"`, or `"border"` — how the rainbow colors are applied. |
+| `rainbowMatchingTags.matchBackgroundColor` | `rgba(255, 215, 0, 0.35)` | Background color applied to a tag and its match when the cursor is on either one. |
+| `rainbowMatchingTags.unmatchedColor` | `#e2041b` | Color for tags that couldn't be matched to a pair. |
+| `rainbowMatchingTags.allowEverywhere` | `false` | Run on every file type, not just `supportedLanguages`. |
+| `rainbowMatchingTags.supportedLanguages` | `html`, `php`, `twig`, `blade`, `smarty`, `xml`, `vue` | Language IDs the extension activates for. |
+| `rainbowMatchingTags.denylistTags` | void/meta/structural tags | Tag names that are never colored. |
 
 ### A note on JSX/TSX
 
@@ -94,10 +94,10 @@ files it can't tell a JSX tag apart from a generic (`useState<Foo>()`) or an
 old-style type assertion (`<Type>value`). You can opt in per-project with:
 
 ```json
-"rainbowTags.supportedLanguages": ["html", "vue", "javascriptreact", "typescriptreact"]
+"rainbowMatchingTags.supportedLanguages": ["html", "vue", "javascriptreact", "typescriptreact"]
 ```
 
-or `"rainbowTags.allowEverywhere": true` — just expect the occasional false
+or `"rainbowMatchingTags.allowEverywhere": true` — just expect the occasional false
 positive on generics-heavy TypeScript code.
 
 ## Development
