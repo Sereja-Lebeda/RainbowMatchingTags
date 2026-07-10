@@ -1,0 +1,127 @@
+{
+  "name": "rainbow-tags-fixed",
+  "displayName": "Rainbow Tags (Fixed)",
+  "description": "Colors matching tag pairs by nesting depth, stays correct when a tag is missing or commented out, and highlights the matching pair on click.",
+  "version": "0.1.0",
+  "publisher": "local-dev",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/src/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Rainbow Tags",
+      "properties": {
+        "rainbowTags.colors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "#FF453A",
+            "#FF9F0A",
+            "#FFD60A",
+            "#32D74B",
+            "#64D2FF",
+            "#0A84FF",
+            "#5E5CE6",
+            "#BF5AF2"
+          ],
+          "description": "Colors used to paint tag pairs, cycling by nesting depth."
+        },
+        "rainbowTags.highlightType": {
+          "type": "string",
+          "enum": [
+            "color",
+            "background-color",
+            "border"
+          ],
+          "default": "color",
+          "description": "How the rainbow colors are applied to tags."
+        },
+        "rainbowTags.matchBackgroundColor": {
+          "type": "string",
+          "default": "rgba(255, 215, 0, 0.35)",
+          "description": "Background color applied to a tag and its matching pair when the cursor is placed on either of them."
+        },
+        "rainbowTags.unmatchedColor": {
+          "type": "string",
+          "default": "#e2041b",
+          "description": "Color used for tags that could not be matched to a pair (e.g. a missing or commented-out closing tag)."
+        },
+        "rainbowTags.allowEverywhere": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable tag highlighting in all file types, not just supportedLanguages."
+        },
+        "rainbowTags.supportedLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "html",
+            "php",
+            "twig",
+            "blade",
+            "smarty",
+            "xml",
+            "vue"
+          ],
+          "description": "Language IDs the extension activates for."
+        },
+        "rainbowTags.denylistTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "!DOCTYPE",
+            "html",
+            "head",
+            "meta",
+            "body",
+            "title",
+            "link",
+            "script",
+            "base",
+            "style",
+            "area",
+            "br",
+            "col",
+            "embed",
+            "hr",
+            "img",
+            "input",
+            "param",
+            "source",
+            "track",
+            "wbr"
+          ],
+          "description": "Tag names that are never highlighted (structural/meta/void tags)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "pretest": "tsc -p ./",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "mocha": "^10.4.0",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rainbow Tags demo</title>
+</head>
+<body>
+  <section class="outer">
+    <div class="normal-nesting">
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div>
+                    111
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span>level 2, first sibling</span>
+      <p>level 2, second sibling - should match span's color</p>
+      <ul>
+        <li>a</li>
+        <li>b</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="broken-comment">
+    
+    <section>
+      <section></section>
+    </section>
+    <!-- The closing tag below is commented out on purpose. -->
+    <div class="unclosed-because-commented">
+      <!-- </div> -->
+    </div>
+  </section>
+
+  <footer class="sibling-after-broken-block">
+    This footer must still get the SAME color as the two <section> tags
+    above it - the broken div inside the previous section must not
+    desync anything that comes after it.
+  </footer>
+
+  <article>
+    <header>missing its own closing tag on purpose</header>
+    <p>orphaned paragraph inside the unclosed article</p>
+  </article>
+
+  <aside>this one is fine and should look normal again</aside>
+</body>
+</html>
