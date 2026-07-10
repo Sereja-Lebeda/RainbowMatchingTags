@@ -2,8 +2,8 @@
   "name": "rainbow-matching-tags",
   "displayName": "Rainbow Matching Tags",
   "description": "Colors matching tag pairs by nesting depth, stays correct when a tag is missing or commented out, and highlights the matching pair on click.",
-  "version": "0.1.0",
-  "publisher": "sereja-lebeda",
+  "version": "0.1.1",
+  "publisher": "Sereja-Lebeda",
   "license": "MIT",
   "icon": "extensIcon.png",
   "repository": {
