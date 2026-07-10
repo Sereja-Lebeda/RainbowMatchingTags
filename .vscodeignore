@@ -1,0 +1,12 @@
+.claude/**
+.git/**
+.gitignore
+.mocharc.json
+tsconfig.json
+src/**
+test/**
+out/**/*.map
+out/test/**
+demo/**
+*.vsix
+node_modules/**

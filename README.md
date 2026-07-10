@@ -100,6 +100,20 @@ old-style type assertion (`<Type>value`). You can opt in per-project with:
 or `"rainbowMatchingTags.allowEverywhere": true` — just expect the occasional false
 positive on generics-heavy TypeScript code.
 
+## Installation
+
+Not yet on the VS Code Marketplace (publisher signup is currently blocked by
+a regional restriction). In the meantime, install from a `.vsix`:
+
+1. Grab the latest `.vsix` from the [Releases
+   page](https://github.com/Sereja-Lebeda/RainbowMatchingTags/releases).
+2. In VS Code: Extensions view → `...` menu → **Install from VSIX...** → pick
+   the downloaded file.
+   - Or from the command line: `code --install-extension rainbow-matching-tags-<version>.vsix`
+
+Updating works the same way — download the newer `.vsix` and install it
+again over the old one.
+
 ## Development
 
 ```sh

@@ -3,9 +3,9 @@
   "displayName": "Rainbow Matching Tags",
   "description": "Colors matching tag pairs by nesting depth, stays correct when a tag is missing or commented out, and highlights the matching pair on click.",
   "version": "0.1.0",
-  "publisher": "local-dev",
+  "publisher": "sereja-lebeda",
   "license": "MIT",
-  "icon": "icon.png",
+  "icon": "extensIcon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Sereja-Lebeda/RainbowMatchingTags.git"
@@ -138,6 +138,7 @@
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
     "mocha": "^10.4.0",
     "typescript": "^5.4.5"
   }
