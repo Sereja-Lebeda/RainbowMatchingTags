@@ -8,12 +8,12 @@
   "icon": "icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Sereja-Lebeda/Rainbow-Tags-Rewired.git"
+    "url": "https://github.com/Sereja-Lebeda/RainbowMatchingTags.git"
   },
   "bugs": {
-    "url": "https://github.com/Sereja-Lebeda/Rainbow-Tags-Rewired/issues"
+    "url": "https://github.com/Sereja-Lebeda/RainbowMatchingTags/issues"
   },
-  "homepage": "https://github.com/Sereja-Lebeda/Rainbow-Tags-Rewired#readme",
+  "homepage": "https://github.com/Sereja-Lebeda/RainbowMatchingTags#readme",
   "keywords": [
     "rainbow",
     "tags",
