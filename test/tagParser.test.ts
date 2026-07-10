@@ -72,6 +72,46 @@ describe('extractTags', () => {
     const tags = extractTags(text, emptyDenylist);
     assert.deepStrictEqual(names(tags), ['script', '/script']);
   });
+
+  it('still recognizes a self-closing tag whose prop is an arrow function (">" inside "=>")', () => {
+    // Regression: the ">" inside "=>" used to be mistaken for the tag's own
+    // closing bracket, truncating the tag early and leaving it unmatched.
+    const text = '<div><FunctionBtn onClick={() => console.log("hi")} disabled={false} /></div>';
+    const tags = extractTags(text, DENYLIST);
+    assert.deepStrictEqual(names(tags), ['div', '/div']);
+  });
+
+  it('still recognizes a self-closing tag whose prop contains a bare ">" comparison', () => {
+    const text = '<div><Foo bar={a > b} /></div>';
+    const tags = extractTags(text, DENYLIST);
+    assert.deepStrictEqual(names(tags), ['div', '/div']);
+  });
+
+  it('does not let a nested JSX element passed as a prop value close the outer tag early', () => {
+    const text = '<div><Foo icon={<Bar />} label="x" /></div>';
+    const tags = extractTags(text, DENYLIST);
+    assert.deepStrictEqual(names(tags), ['div', '/div']);
+  });
+
+  it('handles a real multi-prop self-closing component with an arrow-function onClick, unchanged by siblings', () => {
+    const text = [
+      '<div>',
+      '<FunctionBtn',
+      '  Icon={TelegramIcon}',
+      '  text="send"',
+      '  onClick={() => console.log("TODO: send message")}',
+      '  disabled={false}',
+      '/>',
+      '<FunctionBtn',
+      '  Icon={RepeatIcon}',
+      '  onClick={onRepeat}',
+      '  disabled={false}',
+      '/>',
+      '</div>'
+    ].join('\n');
+    const tags = extractTags(text, DENYLIST);
+    assert.deepStrictEqual(names(tags), ['div', '/div']);
+  });
 });
 
 describe('matchTags - robustness against missing/commented tags (the original bug)', () => {

@@ -45,11 +45,66 @@ export interface ParseResult {
   unmatched: ParsedTag[];
 }
 
-// The attribute-scanning group stops before a trailing "/>" (via the
-// negative lookahead) so a self-closing slash is never greedily swallowed
-// as if it were plain attribute text, e.g. `<CustomIcon/>`.
-const TAG_PATTERN = '<(\\/)?([a-zA-Z][-a-zA-Z0-9:_.]*)((?:"[^"]*"|\'[^\']*\'|(?!\\/?>)[^"\'>])*)(\\/)?>';
+const TAG_HEAD_PATTERN = /<(\/)?([a-zA-Z][-a-zA-Z0-9:_.]*)/g;
 const RAW_TEXT_ELEMENTS = new Set(['script', 'style']);
+
+interface AttrScanResult {
+  /** Offset just past the tag's closing ">" (or the trailing "/>"). */
+  end: number;
+  selfClosing: boolean;
+}
+
+/**
+ * Scans attribute content starting right after the tag name, tracking quote
+ * state and `{}` nesting depth so a bare `>` inside a JS expression - an
+ * arrow function (`() => x`), a comparison (`a > b`), a ternary, or a nested
+ * JSX element passed as a prop (`icon={<Foo />}`) - is never mistaken for
+ * the tag's closing bracket. The tag only actually ends at a `>` (or `/>`)
+ * seen while brace depth is 0 and we're not inside a quoted string.
+ */
+function scanTagAttrs(text: string, start: number): AttrScanResult | null {
+  let braceDepth = 0;
+  let quote: string | null = null;
+  const len = text.length;
+
+  for (let i = start; i < len; i++) {
+    const ch = text[i];
+
+    if (quote) {
+      if (ch === quote) {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      continue;
+    }
+
+    if (ch === '{') {
+      braceDepth++;
+      continue;
+    }
+    if (ch === '}') {
+      if (braceDepth > 0) {
+        braceDepth--;
+      }
+      continue;
+    }
+
+    if (braceDepth === 0) {
+      if (ch === '/' && text[i + 1] === '>') {
+        return { end: i + 2, selfClosing: true };
+      }
+      if (ch === '>') {
+        return { end: i + 1, selfClosing: false };
+      }
+    }
+  }
+
+  return null;
+}
 
 /** Replaces every non-newline character with a space, preserving string length and line breaks. */
 function blank(s: string): string {
@@ -88,28 +143,37 @@ export function blankOutComments(text: string): string {
 export function extractTags(text: string, denylist: ReadonlySet<string>): ParsedTag[] {
   const cleaned = blankOutComments(text);
   const tags: ParsedTag[] = [];
-  const tagRe = new RegExp(TAG_PATTERN, 'g');
+  const headRe = new RegExp(TAG_HEAD_PATTERN);
 
   let m: RegExpExecArray | null;
-  while ((m = tagRe.exec(cleaned))) {
-    const full = m[0];
+  while ((m = headRe.exec(cleaned))) {
     const isClosing = m[1] === '/';
     const name = m[2];
-    const isSelfClosing = m[4] === '/';
     const start = m.index;
-    const end = start + full.length;
     const lowerName = name.toLowerCase();
 
-    if (!isClosing && !isSelfClosing && RAW_TEXT_ELEMENTS.has(lowerName)) {
+    const scan = scanTagAttrs(cleaned, headRe.lastIndex);
+    if (!scan) {
+      // Unterminated tag (e.g. a stray "<" that isn't really a tag at all).
+      // Don't let it swallow the rest of the document - just skip past the
+      // "<" and keep looking for real tags.
+      headRe.lastIndex = start + 1;
+      continue;
+    }
+
+    const end = scan.end;
+    headRe.lastIndex = end;
+
+    if (!isClosing && !scan.selfClosing && RAW_TEXT_ELEMENTS.has(lowerName)) {
       // Skip raw-text content (script/style) so `<`/`>` operators or
       // comparisons inside it are never mistaken for tags.
       const closeRe = new RegExp('<\\/' + lowerName + '\\s*>', 'i');
       const rest = cleaned.slice(end);
       const closeMatch = closeRe.exec(rest);
-      tagRe.lastIndex = closeMatch ? end + closeMatch.index : cleaned.length;
+      headRe.lastIndex = closeMatch ? end + closeMatch.index : cleaned.length;
     }
 
-    if (isSelfClosing || denylist.has(lowerName)) {
+    if (scan.selfClosing || denylist.has(lowerName)) {
       continue;
     }
 
